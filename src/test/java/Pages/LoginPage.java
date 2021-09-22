@@ -15,79 +15,48 @@
 
 package Pages;
 
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
+
+import com.relevantcodes.extentreports.LogStatus;
+
+import features.AbstractBaseTests.TestBase;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import utils.QuilPageObject;
 
 /**
  * A login page
  */
-public class LoginPage extends BasePage {
+public class LoginPage extends QuilPageObject {
     private static final int KEYBOARD_ANIMATION_DELAY = 1000;
+    
 
     /**
      * The login button
      */
-    @AndroidFindBy(id = "com.amazonaws.devicefarm.android.referenceapp:id/login_button")
-    private MobileElement loginButton;
+    @AndroidFindBy(xpath = "//*[@class=\"android.widget.TextView\" and @text=\"Sign In\"]")
+    private MobileElement signInButton;
 
-    /**
-     * The user name input
-     */
-    @AndroidFindBy(id = "com.amazonaws.devicefarm.android.referenceapp:id/username_text_input")
-    private MobileElement usernameField;
+       public LoginPage(AppiumDriver driver) {
+		// TODO Auto-generated constructor stub
+    	super(driver);
+	}
 
-    /**
-     * The password input
-     */
-    @AndroidFindBy(id = "com.amazonaws.devicefarm.android.referenceapp:id/password_text_input")
-    private MobileElement passwordField;
-
-    public LoginPage(AppiumDriver driver) {
-        super(driver);
-    }
-
-    /**
-     * Tries to login with a set of credentials
-     *
-     * @param username the username
-     * @param password the password
-     *
-     * @return true if username was entered in correctly, else false.
-     */
-    public boolean login(String username, String password) throws InterruptedException {
-        boolean usernameStatus = sendKeysToElement(username, usernameField, false);
-
-        passwordField.click();
-        Thread.sleep(KEYBOARD_ANIMATION_DELAY);
-        passwordField.sendKeys(password);
-
-        loginButton.click();
-
-        return usernameStatus;
-    }
-
-    /**
-     *
-     * @return the login message
-     */
-    public String getMessage() {
-        return driver.findElementById("Alt Message").getText();
-    }
-
-    /**
-     * Checks to see if back at login page
-     *
-     * @return is back at login
-     */
-    public boolean checkIfBackAtLogin() {
-        return loginButton.isDisplayed() && usernameField.isDisplayed() && passwordField.isDisplayed();
-    }
-
-    /**
-     * Presses the logout/try again button
-     */
-    public void pressAltButton() {
-        driver.findElementById("Alt Button").click();
-    }
+		
+	public void validateLoginPage() throws IOException, InterruptedException {
+		System.out.println("Navigation to login page is successful");
+		Thread.sleep(5000);
+		signInButton.click();
+		TestBase.test.log(LogStatus.PASS,test.addScreenCapture(capture(driver))+ "Button is clicked");
+		
+		
+		
+	}
+	
+	
 }
